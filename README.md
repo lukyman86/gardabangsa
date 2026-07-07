@@ -75,7 +75,7 @@ db/schema.sql             # Enums, tabel, RLS, trigger, storage buckets
 ## 🚢 Deployment (Vercel)
 
 `vercel.json` sudah disiapkan: build memakai `vite build` (output `dist/`),
-lalu semua request di-rewrite ke serverless function `api/server.ts` yang
+lalu semua request di-rewrite ke serverless function `api/server.js` yang
 mengekspos `fetch` handler dari TanStack Start (`dist/server/server.js`).
 
 1. Push repo ke GitHub.
