@@ -1,188 +1,96 @@
-# 🏛️ Garda Bangsa Papua Barat - Website CMS
+# 🏛️ Garda Bangsa Papua Barat
 
-Website dan CMS untuk organisasi Garda Bangsa Papua Barat dengan fitur manajemen anggota, berita, galeri, dan program kerja.
+Website organisasi dinamis untuk **Garda Bangsa Papua Barat** — dibangun dengan
+**TanStack Start + React + Tailwind CSS + Supabase**.
 
-## ✨ Fitur Utama
+## ✨ Fitur
 
-- **Autentikasi & Otorisasi**: Login, register dengan role-based access control
-- **Scoping Geografis**: Operator Daerah hanya melihat data daerah mereka
-- **CMS Berita**: Kelola berita dengan status publikasi
-- **CMS Galeri**: Manajemen dokumentasi kegiatan
-- **Manajemen Anggota**: CRUD anggota dengan integritas data
-- **Landing Page Responsif**: Tampilan publik yang menarik
+- **Halaman publik (SSR)** dengan OG tags: Beranda, Profil, Galeri, Berita
+  (list + detail + search + kategori + pagination), Kontak.
+- **Autentikasi** email+password, register (auto role `anggota`), lupa/reset
+  password via email Supabase.
+- **Dashboard Anggota**: profil, KTA digital (canvas → PNG), status keanggotaan.
+- **Dashboard Operator**: verifikasi anggota cabang, upload berita lokal.
+- **Dashboard Admin**: CRUD berita/galeri, kelola operator, verifikasi anggota.
+- **Database**: PostgreSQL + RLS (row level security) yang aman per role & cabang.
+- **Storage**: bucket `gallery` (publik), `documents` (publik), `member-docs`
+  (privat).
+- **SEO**: sitemap dinamis (`/api/sitemap.xml`) + `robots.txt`.
 
 ## 🛠️ Tech Stack
 
-- Node.js + Express.js
-- Supabase (PostgreSQL)
-- EJS Template Engine
-- Bootstrap 5
-- bcryptjs untuk keamanan password
+- [TanStack Start](https://tanstack.com/start) (React SSR framework)
+- React 19 + TypeScript
+- Tailwind CSS v4 (design token `oklch` — palet Papua Barat)
+- Supabase (Auth, Postgres, Storage) via `@supabase/ssr`
 
 ## 📋 Prerequisites
 
-- Node.js >= 14.0.0
-- npm >= 6.0.0
-- Akun Supabase
+- Node.js >= 20
+- Akun Supabase (project URL + anon key)
+- Storage buckets & tabel sesuai `db/schema.sql`
 
 ## 🚀 Instalasi & Setup
 
-### 1. Clone Repository
 ```bash
-git clone https://github.com/lukyman86/gardabangsa.git
-cd gardabangsa
-```
-
-### 2. Install Dependencies
-```bash
+# 1. Install dependencies
 npm install
-```
 
-### 3. Setup Environment Variables
-```bash
+# 2. Environment variables
 cp .env.example .env
+#   isi SUPABASE_URL, SUPABASE_ANON_KEY, SITE_URL
+
+# 3. Setup database
+#   Buka Supabase SQL Editor, jalankan seluruh isi db/schema.sql
+
+# 4. Jalankan di development
+npm run dev      # http://localhost:3000
+
+# 5. Build & preview
+npm run build
+npm run start
 ```
-
-Edit `.env` dengan konfigurasi Supabase Anda:
-```
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-PORT=3000
-NODE_ENV=development
-SESSION_SECRET=garda-bangsa-pb-secret-key
-```
-
-### 4. Setup Database
-- Buka Supabase Console
-- Buat database baru atau gunakan yang sudah ada
-- Jalankan SQL dari `db/schema.sql`
-
-### 5. Jalankan Aplikasi
-```bash
-# Development
-npm run dev
-
-# Production
-npm start
-```
-
-Akses aplikasi di `http://localhost:3000`
 
 ## 📁 Struktur Project
 
-```
-gardabangsa/
-├── config/              # Konfigurasi
-│   └── supabase.js
-├── middleware/          # Custom middleware
-│   └── auth.js
-├── routes/              # Route handlers
-│   ├── public.js
-│   ├── auth.js
-│   └── admin.js
-├── views/               # EJS templates
-│   ├── layouts/
-│   ├── public/
-│   ├── admin/
-│   ├── auth/
-│   └── errors/
-├── public/              # Static files
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── db/                  # Database scripts
-│   └── schema.sql
-├── server.js            # Entry point
-├── package.json
-├── .env.example
-└── README.md
+```text
+src/
+  routes/                 # File-based routing (public + _authenticated + api)
+  components/             # ui, layout, home, news, gallery, admin, auth
+  hooks/                  # use-auth, use-profile, use-role
+  lib/                    # supabase-helpers, kta-generator, validators, utils
+  integrations/supabase/  # client (browser), client.server, types, auth-middleware
+  styles.css              # Design system (oklch tokens)
+db/schema.sql             # Enums, tabel, RLS, trigger, storage buckets
 ```
 
-## 👥 User Roles
+## 🔐 Role & Akses
 
-| Role | Akses |
-|------|-------|
-| **Admin** | Full access ke semua fitur |
-| **Operator Daerah** | Akses terbatas ke daerah mereka |
-| **Anggota** | Dashboard & akses publik |
+| Role      | Akses                                                        |
+|-----------|-------------------------------------------------------------|
+| `admin`   | Full access (CRUD berita/galeri/anggota, kelola operator)   |
+| `operator`| Verifikasi anggota & berita cabangnya                       |
+| `anggota` | Dashboard pribadi, KTA digital, edit profil                 |
 
-## 🔐 Keamanan
+## 🚢 Deployment (Vercel)
 
-- Password di-hash menggunakan bcryptjs
-- Session management dengan express-session
-- CSRF protection
-- Input validation
-- Geographic scoping untuk data integrity
+`vercel.json` sudah disiapkan: build memakai `vite build` (output `dist/`),
+lalu semua request di-rewrite ke serverless function `api/server.ts` yang
+mengekspos `fetch` handler dari TanStack Start (`dist/server/server.js`).
 
-## 📚 API Routes
+1. Push repo ke GitHub.
+2. Import project di Vercel (Framework: **Other**).
+3. Tambahkan environment variables: `VITE_SUPABASE_URL`,
+   `VITE_SUPABASE_ANON_KEY`, `VITE_SITE_URL` (+ `SITE_URL`).
+4. Deploy — `vercel.json` akan menangani build & rewrite otomatis.
 
-### Public Routes
-- `GET /` - Halaman beranda
-- `GET /profile` - Profil organisasi
-- `GET /gallery` - Galeri publik
-- `GET /news` - Daftar berita
-- `GET /news/:slug` - Detail berita
-- `GET /contact` - Halaman kontak
+## 💻 Menjalankan di Production (lokal)
 
-### Authentication Routes
-- `GET /auth/login` - Form login
-- `POST /auth/login` - Process login
-- `GET /auth/register` - Form register
-- `POST /auth/register` - Process register
-- `GET /auth/logout` - Logout
-- `GET /auth/forgot-password` - Form lupa password
-- `POST /auth/forgot-password` - Process lupa password
-- `GET /auth/reset-password?token=xxx` - Form reset password
-- `POST /auth/reset-password` - Process reset password
-
-### Admin Routes (Protected)
-- `GET /admin/dashboard` - Dashboard admin
-- `GET /admin/members` - Daftar anggota
-- `GET /admin/members/create` - Form tambah anggota
-- `POST /admin/members/create` - Tambah anggota
-- `GET /admin/news` - Daftar berita
-- `GET /admin/news/create` - Form buat berita
-- `POST /admin/news/create` - Buat berita
-- `GET /admin/gallery` - Daftar galeri
-- `GET /admin/gallery/create` - Form unggah foto
-- `POST /admin/gallery/create` - Unggah foto
-
-## 🚢 Deployment
-
-### Heroku
 ```bash
-heroku login
-heroku create garda-bangsa-pb
-heroku config:set SUPABASE_URL=your_url
-heroku config:set SUPABASE_SERVICE_ROLE_KEY=your_key
-git push heroku main
+npm run build
+npm run start      # node server.mjs → http://localhost:3000
 ```
-
-### Railway
-```bash
-railway link
-railway up
-```
-
-### Vercel (untuk serverless)
-```bash
-npm install -g vercel
-vercel
-```
-
-## 🤝 Contributing
-
-Kontribusi sangat diterima! Silakan:
-1. Fork repository
-2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
-3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
-4. Push ke branch (`git push origin feature/AmazingFeature`)
-5. Buka Pull Request
 
 ## 📝 License
 
-MIT License - lihat file LICENSE untuk detail
-
-## 📞 Support
-
-Untuk pertanyaan dan support, hubungi tim development.
+MIT

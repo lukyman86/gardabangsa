@@ -1,0 +1,148 @@
+@import 'tailwindcss';
+
+/* =========================================================
+   Design System — Garda Bangsa Papua Barat
+   Palet inspirasi: hutan Papua (forest), laut Papua (ocean),
+   burung Cendrawasih (accent kuning). Semua warna oklch,
+   diakses melalui semantic token — tidak ada bg-[#...].
+   ========================================================= */
+
+@theme {
+  /* Forest — hijau hutan Papua */
+  --color-forest-50: oklch(0.97 0.02 155);
+  --color-forest-100: oklch(0.93 0.04 155);
+  --color-forest-200: oklch(0.86 0.07 155);
+  --color-forest-300: oklch(0.76 0.11 153);
+  --color-forest-400: oklch(0.66 0.14 152);
+  --color-forest-500: oklch(0.56 0.15 150);
+  --color-forest-600: oklch(0.48 0.14 150);
+  --color-forest-700: oklch(0.4 0.12 150);
+  --color-forest-800: oklch(0.33 0.1 150);
+  --color-forest-900: oklch(0.26 0.08 150);
+  --color-forest-950: oklch(0.16 0.05 150);
+
+  /* Ocean — biru laut Papua */
+  --color-ocean-50: oklch(0.97 0.02 220);
+  --color-ocean-100: oklch(0.92 0.05 220);
+  --color-ocean-200: oklch(0.84 0.08 218);
+  --color-ocean-300: oklch(0.74 0.11 216);
+  --color-ocean-400: oklch(0.63 0.13 214);
+  --color-ocean-500: oklch(0.53 0.14 212);
+  --color-ocean-600: oklch(0.45 0.13 212);
+  --color-ocean-700: oklch(0.38 0.11 212);
+  --color-ocean-800: oklch(0.31 0.09 212);
+  --color-ocean-900: oklch(0.24 0.07 212);
+  --color-ocean-950: oklch(0.15 0.04 212);
+
+  /* Cendrawasih — aksen kuning */
+  --color-cendrawasih-50: oklch(0.98 0.02 95);
+  --color-cendrawasih-100: oklch(0.95 0.06 92);
+  --color-cendrawasih-200: oklch(0.9 0.11 90);
+  --color-cendrawasih-300: oklch(0.85 0.16 88);
+  --color-cendrawasih-400: oklch(0.79 0.19 85);
+  --color-cendrawasih-500: oklch(0.74 0.2 83);
+  --color-cendrawasih-600: oklch(0.66 0.19 80);
+  --color-cendrawasih-700: oklch(0.56 0.16 78);
+  --color-cendrawasih-800: oklch(0.46 0.13 76);
+  --color-cendrawasih-900: oklch(0.37 0.1 74);
+  --color-cendrawasih-950: oklch(0.24 0.06 72);
+
+  /* Neutral — kulit kayu / batu */
+  --color-sand-50: oklch(0.98 0.005 95);
+  --color-sand-100: oklch(0.95 0.01 95);
+  --color-sand-200: oklch(0.9 0.02 95);
+  --color-sand-300: oklch(0.83 0.03 95);
+  --color-sand-400: oklch(0.7 0.03 95);
+  --color-sand-500: oklch(0.6 0.03 95);
+  --color-sand-600: oklch(0.5 0.03 95);
+  --color-sand-700: oklch(0.42 0.02 95);
+  --color-sand-800: oklch(0.33 0.02 95);
+  --color-sand-900: oklch(0.25 0.02 95);
+  --color-sand-950: oklch(0.16 0.01 95);
+
+  /* Semantic tokens */
+  --color-background: var(--color-sand-50);
+  --color-foreground: var(--color-sand-900);
+  --color-primary: var(--color-forest-700);
+  --color-primary-foreground: var(--color-sand-50);
+  --color-secondary: var(--color-ocean-600);
+  --color-secondary-foreground: var(--color-sand-50);
+  --color-accent: var(--color-cendrawasih-400);
+  --color-accent-foreground: var(--color-sand-950);
+  --color-muted: var(--color-sand-100);
+  --color-muted-foreground: var(--color-sand-600);
+  --color-border: var(--color-sand-200);
+  --color-ring: var(--color-forest-500);
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Shadows */
+  --shadow-soft: 0 4px 24px -8px oklch(0.4 0.1 150 / 0.25);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-forest-900);
+  }
+}
+
+/* Utilitas dekoratif Papua */
+@layer components {
+  .container-gb {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-gb {
+      padding-inline: 2rem;
+    }
+  }
+
+  .bg-pattern {
+    background-image:
+      radial-gradient(circle at 20% 20%, color-mix(in oklch, var(--color-cendrawasih-400) 18%, transparent), transparent 40%),
+      radial-gradient(circle at 80% 0%, color-mix(in oklch, var(--color-ocean-400) 18%, transparent), transparent 35%);
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(
+      120deg,
+      var(--color-forest-600),
+      var(--color-ocean-500) 55%,
+      var(--color-cendrawasih-500)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
