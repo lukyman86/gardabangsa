@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= article.title %> - Garda Bangsa Papua Barat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('../layouts/header') %>
+    
+    <main>
+        <!-- Article Header -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h1 class="mb-3"><%= article.title %></h1>
+                <p class="text-muted">
+                    <small>
+                        <span class="badge bg-secondary"><%= article.category %></span>
+                        <%= new Date(article.created_at).toLocaleDateString('id-ID') %>
+                    </small>
+                </p>
+            </div>
+        </section>
+        
+        <!-- Article Content -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <% if (article.image_url) { %>
+                            <img src="<%= article.image_url %>" class="img-fluid rounded mb-4" alt="<%= article.title %>">
+                        <% } %>
+                        <div class="article-content">
+                            <%- article.content %>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <% if (relatedArticles && relatedArticles.length > 0) { %>
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">Berita Terkait</h5>
+                                </div>
+                                <div class="card-body">
+                                    <% relatedArticles.forEach(related => { %>
+                                        <div class="mb-3 pb-3 border-bottom">
+                                            <h6><a href="/news/<%= related.slug %>" class="text-decoration-none"><%= related.title %></a></h6>
+                                            <small class="text-muted"><%= new Date(related.created_at).toLocaleDateString('id-ID') %></small>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <%- include('../layouts/footer') %>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
