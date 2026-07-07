@@ -1,2 +1,2 @@
-// @ts-nocheck - re-exports the compiled Vite/TanStack bundle (JS output, no declarations)
+/// <reference path="../types/api-shims.d.ts" />
 export { default } from '../dist/server/server.js'
