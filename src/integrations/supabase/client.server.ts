@@ -1,7 +1,16 @@
 import { createServerClient } from '@supabase/ssr'
 import { getCookies, setCookie } from '@tanstack/react-start/server'
 import type { Database } from './types'
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './client'
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from './client'
+
+export const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY as string
+export const SUPABASE_JWKS_URL = process.env.SUPABASE_JWKS_URL as string
+
+if (!SUPABASE_SECRET_KEY || !SUPABASE_JWKS_URL) {
+  console.warn(
+    '[supabase] SUPABASE_SECRET_KEY / SUPABASE_JWKS_URL belum diisi di .env',
+  )
+}
 
 /**
  * Server Supabase client with cookie forwarding for SSR (loaders).
@@ -9,7 +18,7 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from './client'
  * setCookie() onto the outgoing response.
  */
 export function getSupabaseServerClient() {
-  return createServerClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  return createServerClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     cookies: {
       getAll() {
         const cookies = getCookies()

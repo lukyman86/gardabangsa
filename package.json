@@ -21,8 +21,8 @@
   "author": "Garda Bangsa Papua Barat",
   "license": "MIT",
   "dependencies": {
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.49.4",
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.110.1",
     "@tanstack/react-query": "^5.62.7",
     "@tanstack/react-router": "^1.97.0",
     "@tanstack/react-start": "^1.114.0",

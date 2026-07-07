@@ -38,7 +38,7 @@ npm install
 
 # 2. Environment variables
 cp .env.example .env
-#   isi SUPABASE_URL, SUPABASE_ANON_KEY, SITE_URL
+#   isi SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY, SUPABASE_JWKS_URL, SITE_URL
 
 # 3. Setup database
 #   Buka Supabase SQL Editor, jalankan seluruh isi db/schema.sql
@@ -81,7 +81,7 @@ mengekspos `fetch` handler dari TanStack Start (`dist/server/server.js`).
 1. Push repo ke GitHub.
 2. Import project di Vercel (Framework: **Other**).
 3. Tambahkan environment variables: `VITE_SUPABASE_URL`,
-   `VITE_SUPABASE_ANON_KEY`, `VITE_SITE_URL` (+ `SITE_URL`).
+   `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`, `SUPABASE_JWKS_URL`, `VITE_SITE_URL` (+ `SITE_URL`).
 4. Deploy — `vercel.json` akan menangani build & rewrite otomatis.
 
 ## 💻 Menjalankan di Production (lokal)
